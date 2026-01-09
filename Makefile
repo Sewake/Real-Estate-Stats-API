@@ -6,3 +6,14 @@ down:
 	docker compose down
 migrate:
 	docker compose exec web python manage.py migrate
+createsuperuser:
+	docker compose exec web python manage.py createsuperuser
+loaddata:
+	docker compose exec web python manage.py import_dataset --path data/dataset/dataset_annonces.csv
+lint:
+	flake8 .
+pre_commit_run:
+	pre-commit run --all-files
+format:
+	isort .
+	black .

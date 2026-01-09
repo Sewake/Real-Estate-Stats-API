@@ -23,9 +23,9 @@ services:
     image: postgres:16-alpine
     restart: always
     environment:
-      - POSTGRES_USER=ixp
-      - POSTGRES_PASSWORD=ixp_password
-      - POSTGRES_DB=ixp
+      - POSTGRES_USER=realestate
+      - POSTGRES_PASSWORD=realestate_password
+      - POSTGRES_DB=realestate
     ports:
       - "5432:5432"
     volumes:
