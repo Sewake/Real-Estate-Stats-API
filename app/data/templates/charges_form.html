@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <title>Charges de copropriété - Stats</title>
+    <style>
+      body { font-family: sans-serif; max-width: 720px; margin: 40px auto; }
+      label { display:block; margin-top:12px; }
+      input { width: 100%; padding: 8px; }
+      button { margin-top: 12px; padding: 10px 14px; }
+      pre { background:#f6f6f6; padding:12px; border-radius:8px; }
+      small { color:#555; }
+    </style>
+  </head>
+  <body>
+    <h1>Stats charges de copropriété</h1>
+    <small>Renseigne un département OU une ville OU un code postal.</small>
+
+    <form id="form">
+      <label>Département (ex: 75)
+        <input name="department_code" />
+      </label>
+
+      <label>Ville (ex: Vincennes)
+        <input name="city" />
+      </label>
+
+      <label>Code postal (ex: 94300)
+        <input name="postal_code" />
+      </label>
+
+      <button type="submit">Calculer</button>
+    </form>
+
+    <h2>Résultat</h2>
+    <pre id="out">{}</pre>
+
+    <script>
+      const form = document.getElementById("form");
+      const out = document.getElementById("out");
+
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const fd = new FormData(form);
+        // Keep only non-empty fields
+        const params = new URLSearchParams();
+        for (const [k, v] of fd.entries()) {
+          if (String(v).trim() !== "") params.set(k, v);
+        }
+
+        const url = "/api/stats/charges/?" + params.toString();
+        const res = await fetch(url);
+        const data = await res.json();
+
+        out.textContent = JSON.stringify(data, null, 2);
+      });
+    </script>
+  </body>
+</html>

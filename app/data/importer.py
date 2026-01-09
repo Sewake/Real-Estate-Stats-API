@@ -28,6 +28,7 @@ def import_file(path: Path) -> int:
     Import a single CSV file into Listing table.
     Returns number of imported rows.
     """
+    POSTAL_CODE_MAX_CHARS = 5
     count = 0
 
     with path.open(newline="", encoding="utf-8") as f:
@@ -54,6 +55,9 @@ def import_file(path: Path) -> int:
             ):
                 # Skip incomplete rows
                 continue
+            if len(postal_code) > POSTAL_CODE_MAX_CHARS:
+                continue
+
             listings.append(
                 Listing(
                     source_id=source_id,

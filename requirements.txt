@@ -1,2 +1,15 @@
 django==6.0.1
 djangorestframework==3.16.1
+psycopg2-binary
+
+# Tests
+pytest==9.0.2
+pytest-cov==7.0.0
+pytest-django==4.11.1
+
+# Code Style & Pre-commit Hooks
+pre-commit==4.4.0
+flake8==7.3.0
+black==25.11.0
+isort==7.0.0
+pyupgrade==3.21.1

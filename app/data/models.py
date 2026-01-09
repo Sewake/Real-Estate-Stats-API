@@ -4,7 +4,7 @@ from django.db import models
 class Listing(models.Model):
     source_id = models.CharField(
         unique=True,
-        max_length=128,
+        max_length=256,
         help_text="External ID to avoid duplicates (e.g. BienIci ID)",
     )
 
