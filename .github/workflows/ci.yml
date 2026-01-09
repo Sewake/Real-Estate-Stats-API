@@ -1,0 +1,75 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: realestate
+          POSTGRES_PASSWORD: realestate_password
+          POSTGRES_DB: realestate
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U realestate -d realestate"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=10
+
+    env:
+      # Django settings
+      DJANGO_SETTINGS_MODULE: config.settings
+      SECRET_KEY: dummy-ci-secret
+      DEBUG: "0"
+      ALLOWED_HOSTS: "*"
+
+      # DB: on force Postgres pour CI
+      POSTGRES_DB: realestate
+      POSTGRES_USER: realestate
+      POSTGRES_PASSWORD: realestate_password
+      POSTGRES_HOST: 127.0.0.1
+      POSTGRES_PORT: "5432"
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+
+      - name: Install system deps (optional, keeps wheels smooth)
+        run: sudo apt-get update && sudo apt-get install -y --no-install-recommends build-essential
+
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Django checks & migrate
+        working-directory: ./app
+        run: |
+          python manage.py check
+          python manage.py migrate --noinput
+
+      - name: Run tests with coverage (XML + HTML)
+        working-directory: ./app
+        run: |
+          pytest --cov=realestate --cov=config --cov-report=xml --cov-report=html -q
+
+      - name: Upload coverage HTML
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: coverage-html
+          path: app/htmlcov/
+          if-no-files-found: warn
