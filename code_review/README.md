@@ -83,8 +83,6 @@ On peut directement retourner:
 
 Attention à la ligne `tmp = self.name.lower()` dans `__repr__`, car `self.name` n'est pas défini dans le `__init__`, ce qui peut conduire à une erreur si on n'appelle pas la fonction `set_name` au préalable.
 
-Aussi
-
 
 ## 6. Utiliser des logs plutôt que des print
 
@@ -153,7 +151,7 @@ La liste `test` contient une liste de booléen où le véhicule est considéré 
 
 ## 13. La fonction `swap_armor` n'a pas besoin de retourner d'objets
 
-Ici on fait une mutation direction sur l'objet, et on ne retourne pas un clone
+Ici on chance directement l'instance passé en argument, et on ne retourne pas de clone. Il n'y a donc pas de necessité de retourner l'objet pour écraser l'ancienne instance.
 
 
 ## 14. Utiliser des sets de données variés dans les tests
@@ -169,7 +167,7 @@ while index < len(tanks):
 ...
 ```
 
-Ici, on évalue plusieurs fois le même type de tank et donc les mêmes conditions. Peut-être créer un dataset avec plusieurs cas différents ?
+On évalue plusieurs fois le même type de tank et donc les mêmes conditions. Peut-être créer un dataset avec plusieurs cas différents ?
 
 ## 15. Attention aux variables écrasées
 
