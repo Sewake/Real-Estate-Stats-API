@@ -134,17 +134,17 @@ while index < len(tanks):
 ## 9. La variable `self.tank = "Tank"` n'est pas utilisée
 
 
-## 10. Essayer d'utiliser des exceptions plus spécifique que `Exception` (e.g: `ValueError`, `TypeError`, `AssertionError`...)
+## 10. Essayer d'utiliser des exceptions plus spécifique que `Exception` (e.g: `ValueError`, `TypeError`, `AssertionError`...)
 
 
-## 11. Éviter de définir les variables mutables comme valeur par défaut (e.g: `def test_tank_safe(shooter, test_vehicles=[]):`)
+## 11. Éviter de définir les variables mutables comme valeur par défaut (e.g: `def test_tank_safe(shooter, test_vehicles=[]):`)
 
 C'est seulement possible si on est sûr de ne jamais manipuler la variable `test_vehicles` (readonly), mais ça reste dangereux car ça peut créer des gros problèmes parfois difficiles à debug !
 
 Je préconiserais à la place de mettre une variable non mutable (comme `None`), et de faire une validation/clean en début de fonction (e.g: `test_vehicles = test_vehicles or []`)
 
 
-## 12. Incohérence sémantique sur `at_least_one_safe`
+## 12. Incohérence sémantique sur `at_least_one_safe`
 
 La liste `test` contient une liste de booléen où le véhicule est considéré comme vulnérable si `True`, mais `at_least_one_safe` est définie comme `True` si `t` est vrai.
 
@@ -154,7 +154,7 @@ La liste `test` contient une liste de booléen où le véhicule est considéré 
 Ici on chance directement l'instance passé en argument, et on ne retourne pas de clone. Il n'y a donc pas de necessité de retourner l'objet pour écraser l'ancienne instance.
 
 
-## 14. Utiliser des sets de données variés dans les tests
+## 14. Utiliser des sets de données variés dans les tests
 
 ```
 for tank in tanks:
