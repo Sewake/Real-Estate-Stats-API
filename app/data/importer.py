@@ -46,13 +46,10 @@ def import_file(path: Path) -> int:
 
             fees = parse_decimal(row.get("CONDOMINIUM_EXPENSES"))
 
-            if not (
-                source_id
-                and department_code
-                and postal_code
-                and city
-                and fees is not None
-            ):
+            # Skip invalid or absurd fees to avoid DB overflow
+            if fees is None or fees < 0 or fees > 1_000_000:
+                continue
+            if not (source_id and department_code and postal_code and city):
                 # Skip incomplete rows
                 continue
             if len(postal_code) > POSTAL_CODE_MAX_CHARS:
