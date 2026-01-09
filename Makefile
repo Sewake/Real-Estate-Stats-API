@@ -11,7 +11,7 @@ migrate:
 createsuperuser:
 	docker compose exec web python manage.py createsuperuser
 loaddata:
-	docker compose exec web python manage.py import_dataset --path data/dataset/dataset_annonces.csv
+	docker compose exec web python manage.py import_dataset
 lint:
 	flake8 .
 pre_commit_run:
