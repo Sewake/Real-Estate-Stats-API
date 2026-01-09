@@ -65,6 +65,7 @@ real_armor = self.armor + armor_type.value
 
 Cela permet de gagner en lisibilité, d'éviter les erreurs et de pouvoir être facilement ré-utilisé ailleurs si besoin. 
 
+
 ## 4. Retourner directement l'évaluation de la condition 
 
 Dans ce cas précis:
@@ -84,9 +85,11 @@ Attention à la ligne `tmp = self.name.lower()` dans `__repr__`, car `self.name`
 
 Aussi
 
+
 ## 6. Utiliser des logs plutôt que des print
 
 `print` pour debug local ponctuel, `logging` pour du code destiné à tourner / être observé.
+
 
 ## 7. Éviter d'exécuter du code en dehors des classes et des fonctions
 
@@ -108,6 +111,7 @@ Cela évite les mauvaises surprises si jamais un autre script veut ré-utiliser 
 
 Notre nouvelle condition `__name__ == "__main__"`  permettra d'éviter d'exécuter le code écrit dans `main` !
 
+
 ## 8. Plusieurs erreurs ici :
 
 ```
@@ -128,9 +132,12 @@ while index < len(tanks):
 4. Nous avons une boucle infinie dans le `while`, car index n'est jamais incrémenté. La boucle `while` n'est d'ailleurs pas nécessaire car on pourrait directement itérer sur la liste de `tanks`
 5. Dans le `while`, il y a une erreur car on utilise `i` au lieu de `index`
 
+
 ## 9. La variable `self.tank = "Tank"` n'est pas utilisée
 
+
 ## 10. Essayer d'utiliser des exceptions plus spécifique que `Exception` (e.g: `ValueError`, `TypeError`, `AssertionError`...)
+
 
 ## 11. Éviter de définir les variables mutables comme valeur par défaut (e.g: `def test_tank_safe(shooter, test_vehicles=[]):`)
 
@@ -143,9 +150,11 @@ Je préconiserais à la place de mettre une variable non mutable (comme `None`),
 
 La liste `test` contient une liste de booléen où le véhicule est considéré comme vulnérable si `True`, mais `at_least_one_safe` est définie comme `True` si `t` est vrai.
 
+
 ## 13. La fonction `swap_armor` n'a pas besoin de retourner d'objets
 
 Ici on fait une mutation direction sur l'objet, et on ne retourne pas un clone
+
 
 ## 14. Utiliser des sets de données variés dans les tests
 
@@ -158,5 +167,20 @@ index = 0
 while index < len(tanks):
     test.append(tanks[i].vulnerable(m1_1))
 ...
+```
 
 Ici, on évalue plusieurs fois le même type de tank et donc les mêmes conditions. Peut-être créer un dataset avec plusieurs cas différents ?
+
+## 15. Attention aux variables écrasées
+
+```
+    def __repr__(self):
+        tmp = self.name.lower()
+        tmp = self.name.replace(' ', '-')
+        return tmp
+```
+
+Dans ce cas là, `tmp` est écrasé immédiatement par `tmp = self.name.replace(' ', '-')`
+
+Aussi, `__repr__` devrait renvoyer une réprésentation comme `Tank(name='...', armor=...)`, pour pouvoir facilement visualiser les attributs de l'objet
+Il faudrait plutôt utiliser `__str__` dans ce cas précis !
