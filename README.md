@@ -22,7 +22,7 @@
 
 
 ## 🔨 1. Build & Démarrer la Stack
-Avant de démarrer, créer un fichier .env. Vous pouvez utiliser le fichier .env.example comme référence:
+Avant de démarrer, créer un fichier `.env`. Vous pouvez utiliser le fichier `.env.example` comme référence:
 
 ```
 cp .env.example .env
@@ -39,6 +39,7 @@ Cela va démarrer les services:
 
 
 Formulaire utilisateur: http://localhost:8000/
+
 Admin: http://localhost:8000/admin/
 
 
@@ -76,7 +77,7 @@ Outils exécutés automatiquement :
 - isort (imports)
 - pyupgrade
 
-**Installation de pre-commit**
+### **Installation de pre-commit**
 
 Installer l’outil (une seule fois) :
 
