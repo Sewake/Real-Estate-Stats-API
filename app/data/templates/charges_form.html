@@ -35,7 +35,22 @@
     <h2>Résultat</h2>
     <pre id="out">{}</pre>
 
+    <hr />
+
+    <h2>Importer une annonce Bienici</h2>
+
+    <form id="import-form">
+    <label>URL Bienici
+        <input name="url" placeholder="https://www.bienici.com/annonce/..." />
+    </label>
+    <button type="submit">Importer</button>
+    </form>
+
+    <h3>Résultat import</h3>
+    <pre id="import-out">{}</pre>
+
     <script>
+      // Stats
       const form = document.getElementById("form");
       const out = document.getElementById("out");
 
@@ -54,6 +69,26 @@
         const data = await res.json();
 
         out.textContent = JSON.stringify(data, null, 2);
+
+        // Import
+        const importForm = document.getElementById("import-form");
+        const importOut = document.getElementById("import-out");
+
+        importForm.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const fd = new FormData(importForm);
+            const url = fd.get("url");
+
+            const res = await fetch("/api/listings/import-bienici/", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({url}),
+            });
+
+            const data = await res.json();
+            importOut.textContent = JSON.stringify(data, null, 2);
+        });
+
       });
     </script>
   </body>

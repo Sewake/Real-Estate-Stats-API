@@ -16,3 +16,7 @@ class ChargesStatsQuerySerializer(serializers.Serializer):
                 "Provide at least one filter: department_code, city or postal_code."
             )
         return attrs
+
+
+class BieniciImportSerializer(serializers.Serializer):
+    url = serializers.URLField()
