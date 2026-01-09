@@ -69,27 +69,26 @@
         const data = await res.json();
 
         out.textContent = JSON.stringify(data, null, 2);
+      });
 
-        // Import
-        const importForm = document.getElementById("import-form");
-        const importOut = document.getElementById("import-out");
+    // Import
+    const importForm = document.getElementById("import-form");
+    const importOut = document.getElementById("import-out");
 
-        importForm.addEventListener("submit", async (e) => {
-            e.preventDefault();
-            const fd = new FormData(importForm);
-            const url = fd.get("url");
+    importForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const fd = new FormData(importForm);
+        const url = fd.get("url");
 
-            const res = await fetch("/api/listings/import-bienici/", {
-            method: "POST",
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify({url}),
-            });
-
-            const data = await res.json();
-            importOut.textContent = JSON.stringify(data, null, 2);
+        const res = await fetch("/api/listings/import-bienici/", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({url}),
         });
 
-      });
+        const data = await res.json();
+        importOut.textContent = JSON.stringify(data, null, 2);
+    });
     </script>
   </body>
 </html>

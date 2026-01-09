@@ -25,6 +25,7 @@ def extract_bienici_id(url: str) -> str:
     - https://www.bienici.com/annonce/.../<bienici_id>
     Returns: <bienici_id>
     """
+    url = url.split("?q")[0]
     m = re.search(r"/annonce/[^?#]+/([^/?#]+)$", url.strip())
     if not m:
         raise ValueError("Invalid Bienici URL format")

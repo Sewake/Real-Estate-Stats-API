@@ -3,8 +3,15 @@ from data.models import Listing
 from data.services.bienici import extract_bienici_id, fetch_bienici_ad, parse_bienici_ad
 from data.services.stats import compute_charges_stats
 from rest_framework import status
+from rest_framework.authentication import BasicAuthentication, SessionAuthentication
 from rest_framework.response import Response
 from rest_framework.views import APIView
+
+
+class CsrfExemptSessionAuthentication(SessionAuthentication):
+
+    def enforce_csrf(self, request):
+        return
 
 
 class ChargesStatsView(APIView):
@@ -25,6 +32,8 @@ class ChargesStatsView(APIView):
 
 
 class ImportBieniciView(APIView):
+    authentication_classes = (CsrfExemptSessionAuthentication, BasicAuthentication)
+
     def post(self, request):
         ser = BieniciImportSerializer(data=request.data)
         ser.is_valid(raise_exception=True)

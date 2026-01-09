@@ -32,10 +32,7 @@ class ListingAdmin(admin.ModelAdmin):
         (
             "Identifiers",
             {
-                "fields": (
-                    "id",
-                    "source_id",
-                ),
+                "fields": ("source_id",),
             },
         ),
         (
