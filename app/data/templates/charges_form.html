@@ -14,7 +14,7 @@
   </head>
   <body>
     <h1>Stats charges de copropriété</h1>
-    <small>Renseigne un département OU une ville OU un code postal.</small>
+    <small>Renseignez un département OU une ville OU un code postal.</small>
 
     <form id="form">
       <label>Département (ex: 75)
@@ -50,18 +50,46 @@
     <pre id="import-out">{}</pre>
 
     <script>
-      // Stats
-      const form = document.getElementById("form");
-      const out = document.getElementById("out");
+    // Stats
+    const form = document.getElementById("form");
+    const out = document.getElementById("out");
 
-      form.addEventListener("submit", async (e) => {
+    const dept = form.querySelector('input[name="department_code"]');
+    const city = form.querySelector('input[name="city"]');
+    const postal = form.querySelector('input[name="postal_code"]');
+    const inputs = [dept, city, postal];
+
+    function syncExclusive(active) {
+        if (active.value.trim() !== "") {
+        for (const inp of inputs) {
+            if (inp !== active) {
+            inp.value = "";
+            inp.disabled = true;
+            } else {
+            inp.disabled = false;
+            }
+        }
+        } else {
+        const still = inputs.find((i) => i.value.trim() !== "");
+        if (still) {
+            syncExclusive(still);
+        } else {
+            for (const inp of inputs) inp.disabled = false;
+        }
+        }
+    }
+
+    for (const inp of inputs) {
+        inp.addEventListener("input", () => syncExclusive(inp));
+    }
+
+    form.addEventListener("submit", async (e) => {
         e.preventDefault();
 
         const fd = new FormData(form);
-        // Keep only non-empty fields
         const params = new URLSearchParams();
         for (const [k, v] of fd.entries()) {
-          if (String(v).trim() !== "") params.set(k, v);
+        if (String(v).trim() !== "") params.set(k, v);
         }
 
         const url = "/api/stats/charges/?" + params.toString();
@@ -69,7 +97,13 @@
         const data = await res.json();
 
         out.textContent = JSON.stringify(data, null, 2);
-      });
+
+        // Reset form after submit
+        form.reset();
+        for (const inp of inputs) {
+        inp.disabled = false;
+        }
+    });
 
     // Import
     const importForm = document.getElementById("import-form");
@@ -81,9 +115,9 @@
         const url = fd.get("url");
 
         const res = await fetch("/api/listings/import-bienici/", {
-        method: "POST",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({url}),
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({ url }),
         });
 
         const data = await res.json();
